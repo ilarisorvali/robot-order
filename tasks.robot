@@ -19,7 +19,7 @@ Order robots from RobotSpareBin Industries Inc
     
 *** Keywords ***
 Open the robot order website
-    Open Available Browser    https://robotsparebinindustries.com/#/robot-order    browser_selection=firefox
+    Open Available Browser    https://robotsparebinindustries.com/#/robot-order
     Wait Until Page Contains Element    id:order
     
 Get robot orders
