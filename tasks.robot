@@ -8,12 +8,14 @@ Library    RPA.Browser.Selenium    auto_close=${True}
 Library    RPA.PDF
 Library    RPA.HTTP
 Library    RPA.Tables
-Library    OperatingSystem
+#Library    OperatingSystem
+Library    RPA.Archive
 
 *** Tasks ***
 Order robots from RobotSpareBin Industries Inc
     Open the robot order website
     Order robots
+    Create ZIP package from receipts files
     
 *** Keywords ***
 Open the robot order website
@@ -68,10 +70,15 @@ Store the receipt as a PDF file
     
 Embed the robot screenshot to the receipt PDF file
     [Arguments]    ${pdf}    ${scr}
-    ${robot_image}=    Create list
-    ...    ${scr}:align=center
-    Add Files To Pdf    ${robot_image}    ${pdf}
-    
+    Open Pdf    ${pdf}
+    ${image} =    Create List    ${scr}:align=center
+    Add Files To PDF    ${image}    ${pdf}    append=True
+    Close Pdf    ${pdf}
+Create ZIP package from receipts files
+    ${zip_file_name}=    Set Variable    ${OUTPUT_DIR}/PDFs.zip
+    Archive Folder With Zip
+    ...    ${OUTPUT_DIR}${/}receipts/
+    ...    ${zip_file_name}
 
 Fill the order form
     [Arguments]    ${robot_to_order}
